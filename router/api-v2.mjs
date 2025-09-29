@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
             <label for="url">Saisissez l'URL à raccourcir :</label>
             <input name="url" id="url" type="url" placeholder="https://perdu.com" required />
           </div>
-          <button type="submit">🔗 Raccourcir l'URL</button>
+          <button type="submit">Raccourcir l'URL</button>
         </form>
       `;
       
@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
       'text/html': () => {
         const content = `
           <div class="result error">
-            <h3>❌ Erreur de validation</h3>
+            <h3>Erreur de validation</h3>
             <p><strong>Erreur :</strong> L'URL fournie n'est pas valide.</p>
             <p>Veuillez vérifier que votre URL commence par <code>http://</code> ou <code>https://</code></p>
           </div>
@@ -126,7 +126,7 @@ router.post('/', async (req, res) => {
       'text/html': () => {
         const content = `
           <div class="result error">
-            <h3>⚠️ Erreur technique</h3>
+            <h3>Erreur technique</h3>
             <p><strong>Erreur :</strong> Impossible de générer un code unique après ${maxAttempts} tentatives.</p>
             <p>Veuillez réessayer dans un moment.</p>
           </div>
@@ -162,7 +162,7 @@ router.post('/', async (req, res) => {
     'text/html': () => {
       const content = `
         <div class="result success">
-          <h3>✅ Lien créé avec succès !</h3>
+          <h3>Lien créé avec succès !</h3>
           
           <div class="info-grid">
             <div class="info-item">
@@ -174,7 +174,7 @@ router.post('/', async (req, res) => {
               <strong>Lien raccourci :</strong>
               <a href="${fullShortUrl}" target="_blank" class="short-link">${fullShortUrl}</a>
               <button class="copy-button" onclick="copyLink('${fullShortUrl}')">
-                📋 Copier le lien
+                Copier le lien
               </button>
             </div>
             
@@ -227,7 +227,7 @@ router.get('/:url', async (req, res) => {
       'text/html': () => {
         const content = `
           <div class="result error">
-            <h3>🔍 Lien non trouvé</h3>
+            <h3>Lien non trouvé</h3>
             <p><strong>Erreur 404 :</strong> Le lien raccourci <code>${url}</code> n'existe pas ou a été supprimé.</p>
             <p>Vérifiez que vous avez saisi la bonne URL.</p>
           </div>
