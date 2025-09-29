@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: url-shortener
+    runtime: node
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LINK_LEN
+        value: 6
+      - key: DB_FILE
+        value: database/database.sqlite
+      - key: DB_SCHEMA
+        value: database/database.sql
+    autoDeploy: true
