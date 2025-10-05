@@ -289,14 +289,7 @@ Pour une persistance des données en production, il est recommandé de migrer ve
 
 ---
 
-## Critères d'évaluation
 
-| Critère | Points | Statut |
-|---------|--------|--------|
-| Fonctionnalités (réduction, redirection) | 16/16 | Complet |
-| Qualité du code (conventions, erreurs) | 3/3 | Complet |
-| Ergonomie et rendu | 1/1 | Complet |
-| **Total** | **20/20** | **Complet** |
 
 ### Fonctionnalités bonus implémentées
 
