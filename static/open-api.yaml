@@ -1,46 +1,17 @@
 openapi: 3.0.3
 info:
   title: URL Shortener API
-  description: |
-    API complète pour raccourcir des URLs avec support de négociation de contenu et suppression sécurisée.
-    
-    **Fonctionnalités :**
-    - Réduction d'URLs longues en codes courts
-    - Redirection automatique vers l'URL d'origine
-    - Compteur de visites
-    - Support JSON et HTML selon l'en-tête Accept
-    - Suppression sécurisée avec clé secrète (X-API-Key)
-    
-    **Authentification :**
-    Pour supprimer un lien, vous devez fournir le code secret via l'en-tête `X-API-Key`.
-  version: 2.0.0
-  contact:
-    name: Support API
-    url: http://localhost:8080/api-docs
-
+  description: API pour raccourcir des URLs
+  version: 1.0.0
 servers:
   - url: http://localhost:8080/api-v1
-    description: API v1 (JSON seulement, fonctionnalités de base)
+    description: API v1
   - url: http://localhost:8080/api-v2
-    description: API v2 (JSON et HTML, avec suppression sécurisée)
-
-tags:
-  - name: Links
-    description: Gestion des liens raccourcis
-  - name: Information
-    description: Informations et statistiques
-  - name: Testing
-    description: Routes de test
-
+    description: API v2
 paths:
   /:
     get:
-      tags:
-        - Information
-      summary: Obtenir le nombre de liens ou afficher la page d'accueil
-      description: |
-        Retourne le nombre total de liens créés en JSON, ou affiche une page d'accueil 
-        avec formulaire de création en HTML selon l'en-tête Accept.
+      summary: Obtenir le nombre de liens
       responses:
         '200':
           description: Succès
@@ -51,27 +22,8 @@ paths:
                 properties:
                   count:
                     type: integer
-                    description: Nombre total de liens créés
-                    example: 42
-            text/html:
-              schema:
-                type: string
-                description: Page HTML avec formulaire de création
-        '406':
-          description: Format non accepté
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
     post:
-      tags:
-        - Links
       summary: Créer un lien raccourci
-      description: |
-        Crée un nouveau lien raccourci à partir d'une URL longue.
-        Retourne les informations du lien en JSON (incluant le code secret) 
-        ou une page de confirmation en HTML.
       requestBody:
         required: true
         content:
@@ -84,330 +36,39 @@ paths:
                 url:
                   type: string
                   format: uri
-                  description: URL à raccourcir (doit commencer par http:// ou https://)
-                  example: "https://www.example.com/very/long/path/to/content"
-            examples:
-              validUrl:
-                summary: URL valide
-                value:
-                  url: "https://nodejs.org/api/http.html#event-connect_1"
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-                - url
-              properties:
-                url:
-                  type: string
-                  format: uri
-                  description: URL à raccourcir
       responses:
         '201':
-          description: Lien créé avec succès
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreatedLink'
-              examples:
-                successfulCreation:
-                  summary: Lien créé
-                  value:
-                    url: "https://nodejs.org/api/http.html"
-                    short_url: "WmFJQp"
-                    created_at: "2025-09-29T10:30:00.000Z"
-                    secret: "RatQak12"
-            text/html:
-              schema:
-                type: string
-                description: Page HTML de confirmation
-        '400':
-          description: URL invalide
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                invalidUrl:
-                  summary: URL invalide
-                  value:
-                    error: "URL invalide"
-            text/html:
-              schema:
-                type: string
-                description: Page d'erreur HTML
-        '406':
-          description: Format non accepté
-        '500':
-          description: Erreur serveur (impossible de générer un code unique)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /{url}:
-    get:
-      tags:
-        - Links
-      summary: Rediriger vers l'URL originale ou obtenir les informations
-      description: |
-        **En HTML (Accept: text/html):** Incrémente le compteur de visites et redirige vers l'URL d'origine.
-        
-        **En JSON (Accept: application/json):** Retourne les informations du lien sans redirection.
-      parameters:
-        - name: url
-          in: path
-          required: true
-          schema:
-            type: string
-            pattern: '^[A-Za-z0-9]{6}$'
-          description: Code court du lien (6 caractères alphanumériques)
-          example: "WmFJQp"
-      responses:
-        '200':
-          description: Informations du lien (JSON seulement)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LinkInfo'
-              examples:
-                linkInfo:
-                  summary: Informations du lien
-                  value:
-                    url: "https://nodejs.org/api/http.html"
-                    short_url: "WmFJQp"
-                    created_at: "2025-09-29T10:30:00.000Z"
-                    visits: 15
-        '302':
-          description: Redirection vers l'URL originale (HTML seulement)
-          headers:
-            Location:
-              description: URL de destination
-              schema:
-                type: string
-                format: uri
-                example: "https://nodejs.org/api/http.html"
-        '404':
-          description: Lien non trouvé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-            text/html:
-              schema:
-                type: string
-                description: Page d'erreur 404
-        '406':
-          description: Format non accepté
-
-    delete:
-      tags:
-        - Links
-      summary: Supprimer un lien raccourci
-      description: |
-        Supprime définitivement un lien raccourci. 
-        
-        **Authentification requise :** Vous devez fournir le code secret généré 
-        lors de la création du lien via l'en-tête `X-API-Key`.
-        
-        **Codes de réponse :**
-        - `200` : Suppression réussie
-        - `401` : En-tête X-API-Key manquante
-        - `403` : Code secret incorrect
-        - `404` : Lien non trouvé
-      parameters:
-        - name: url
-          in: path
-          required: true
-          schema:
-            type: string
-            pattern: '^[A-Za-z0-9]{6}$'
-          description: Code court du lien à supprimer
-          example: "WmFJQp"
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '200':
-          description: Lien supprimé avec succès
+          description: Lien créé
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  url:
                     type: string
-                    example: "Lien supprimé avec succès"
                   short_url:
                     type: string
-                    example: "WmFJQp"
-                  deleted_at:
+                  created_at:
                     type: string
-                    format: date-time
-                    example: "2025-09-29T10:35:00.000Z"
-              examples:
-                successfulDeletion:
-                  summary: Suppression réussie
-                  value:
-                    message: "Lien supprimé avec succès"
-                    short_url: "WmFJQp"
-                    deleted_at: "2025-09-29T10:35:00.000Z"
-        '401':
-          description: En-tête X-API-Key manquante
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-              examples:
-                missingAuth:
-                  summary: Authentification manquante
-                  value:
-                    error: "Authentification requise"
-                    message: "L'en-tête X-API-Key est manquante. Vous devez fournir le code secret pour supprimer ce lien."
-        '403':
-          description: Code secret incorrect
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-              examples:
-                invalidSecret:
-                  summary: Code secret invalide
-                  value:
-                    error: "Accès refusé"
-                    message: "Le code secret fourni est incorrect. Vous n'êtes pas autorisé à supprimer ce lien."
+        '400':
+          description: URL invalide
+  /{url}:
+    get:
+      summary: Rediriger ou obtenir les infos du lien
+      parameters:
+        - name: url
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirection
         '404':
           description: Lien non trouvé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-              examples:
-                notFound:
-                  summary: Lien inexistant
-                  value:
-                    error: "Lien non trouvé"
-                    message: "Le lien raccourci \"WmFJQp\" n'existe pas ou a déjà été supprimé."
-        '500':
-          description: Erreur interne du serveur
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-
   /error:
     get:
-      tags:
-        - Testing
       summary: Route de test d'erreur
-      description: |
-        Génère volontairement une erreur 500 pour tester la gestion d'erreurs.
-        Cette route est utilisée pour les tests et le développement.
       responses:
         '500':
-          description: Erreur serveur générée volontairement
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
-      description: |
-        Code secret généré lors de la création du lien. 
-        
-        **Comment l'obtenir :** Le code secret est retourné dans la réponse 
-        lors de la création d'un lien (champ `secret`).
-        
-        **Exemple :** `RatQak12`
-
-  schemas:
-    CreatedLink:
-      type: object
-      description: Informations du lien créé (incluant le code secret)
-      properties:
-        url:
-          type: string
-          format: uri
-          description: URL originale
-          example: "https://www.example.com/very/long/path"
-        short_url:
-          type: string
-          pattern: '^[A-Za-z0-9]{6}$'
-          description: Code court généré (6 caractères alphanumériques)
-          example: "WmFJQp"
-        created_at:
-          type: string
-          format: date-time
-          description: Date et heure de création (ISO 8601)
-          example: "2025-09-29T10:30:00.000Z"
-        secret:
-          type: string
-          description: |
-            Clé secrète pour la suppression du lien.
-            ⚠️ Conservez ce code précieusement, il ne sera plus accessible après cette réponse.
-          example: "RatQak12"
-      required:
-        - url
-        - short_url
-        - created_at
-        - secret
-
-    LinkInfo:
-      type: object
-      description: Informations publiques du lien (sans le code secret)
-      properties:
-        url:
-          type: string
-          format: uri
-          description: URL originale
-          example: "https://www.example.com/very/long/path"
-        short_url:
-          type: string
-          pattern: '^[A-Za-z0-9]{6}$'
-          description: Code court
-          example: "WmFJQp"
-        created_at:
-          type: string
-          format: date-time
-          description: Date et heure de création
-          example: "2025-09-29T10:30:00.000Z"
-        visits:
-          type: integer
-          minimum: 0
-          description: Nombre de fois où le lien a été visité
-          example: 15
-      required:
-        - url
-        - short_url
-        - created_at
-        - visits
-
-    Error:
-      type: object
-      description: Message d'erreur simple
-      properties:
-        error:
-          type: string
-          description: Message d'erreur
-          example: "URL invalide"
-      required:
-        - error
-
-    DetailedError:
-      type: object
-      description: Message d'erreur détaillé
-      properties:
-        error:
-          type: string
-          description: Type d'erreur
-          example: "Authentification requise"
-        message:
-          type: string
-          description: Description détaillée de l'erreur
-          example: "L'en-tête X-API-Key est manquante."
-      required:
-        - error
-        - message
+          description: Erreur serveur
