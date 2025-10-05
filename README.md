@@ -6,12 +6,12 @@ Service complet de réduction d'URL avec authentification, négociation de conte
 
 ## Application en ligne
 
-**Application déployée :** https://url-shortener-yael.onrender.com
+**Application déployée :** https://tp6-devweb-yael.onrender.com
 
-- **Client Web :** https://url-shortener-yael.onrender.com/
-- **Documentation API :** https://url-shortener-yael.onrender.com/api-docs
-- **API v1 :** https://url-shortener-yael.onrender.com/api-v1/
-- **API v2 :** https://url-shortener-yael.onrender.com/api-v2/
+- **Client Web :** https://tp6-devweb-yael.onrender.com
+- **Documentation API :** https://tp6-devweb-yael.onrender.com/api-docs
+- **API v1 :** https://tp6-devweb-yael.onrender.com/api-v1/
+- **API v2 :** https://tp6-devweb-yael.onrender.com/api-v2/
 
 **Note :** Le service peut prendre 30 secondes à démarrer après 15 minutes d'inactivité (plan gratuit Render).
 
