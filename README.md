@@ -216,18 +216,18 @@ curl -X DELETE https://tp6-devweb-yael.onrender.com/api-v2/ABC123 \
 
 ```bash
 # Créer un lien
-http POST https://url-shortener-yael.onrender.com/api-v2/ url="https://example.com"
+http POST https://tp6-devweb-yael.onrender.com/api-v2/ url="https://example.com"
 
 # Obtenir les infos
-http https://url-shortener-yael.onrender.com/api-v2/ABC123 Accept:application/json
+http https://tp6-devweb-yael.onrender.com/api-v2/ABC123 Accept:application/json
 
 # Supprimer
-http DELETE https://url-shortener-yael.onrender.com/api-v2/ABC123 X-API-Key:SECRET
+http DELETE https://tp6-devweb-yael.onrender.com/api-v2/ABC123 X-API-Key:SECRET
 ```
 
 ### Tests avec l'interface Swagger
 
-Visitez https://url-shortener-yael.onrender.com/api-docs et testez toutes les routes directement dans le navigateur avec l'interface interactive.
+Visitez https://tp6-devweb-yael.onrender.com/api-docs et testez toutes les routes directement dans le navigateur avec l'interface interactive.
 
 ---
 
