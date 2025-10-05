@@ -10,9 +10,6 @@
     "format": "prettier --write **/*.mjs",
     "lint": "eslint **/*.mjs"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yael1NC/TP6_devweb_yael.git"
@@ -27,8 +24,8 @@
   "homepage": "https://github.com/yael1NC/TP6_devweb_yael#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "cross-env": "^10.0.0",
-    "dotenv": "^17.2.2",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
@@ -38,7 +35,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "prettier": "^3.6.2"
   }
 }
