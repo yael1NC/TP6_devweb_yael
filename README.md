@@ -119,7 +119,7 @@ Pour supprimer un lien, utilisez l'en-tête `X-API-Key` avec le code secret obte
 
 ```bash
 # 1. Créer un lien
-curl -X POST https://url-shortener-yael.onrender.com/api-v2/ \
+curl -X POST https://tp6-devweb-yael.onrender.com/api-v2/ \
   -H "Content-Type: application/json" \
   -d '{"url":"https://example.com"}'
 
@@ -132,7 +132,7 @@ curl -X POST https://url-shortener-yael.onrender.com/api-v2/ \
 # }
 
 # 2. Supprimer le lien avec le secret
-curl -X DELETE https://url-shortener-yael.onrender.com/api-v2/ABC123 \
+curl -X DELETE https://tp6-devweb-yael.onrender.com/api-v2/ABC123 \
   -H "X-API-Key: XyZ789"
 ```
 
@@ -174,32 +174,6 @@ curl -X DELETE https://url-shortener-yael.onrender.com/api-v2/ABC123 \
 
 ---
 
-## Structure du projet
-
-```
-TP6_devweb_yael/
-├── database/
-│   ├── database.sql            # Schéma SQLite
-│   └── database.mjs            # Fonctions et requêtes DB
-├── router/
-│   ├── api-v1.mjs             # Routes API v1 (JSON)
-│   └── api-v2.mjs             # Routes API v2 (JSON/HTML) + DELETE
-├── static/
-│   ├── client.html            # Client AJAX
-│   ├── app.js                 # JavaScript frontend
-│   └── open-api.yaml          # Spécification OpenAPI 3.0
-├── views/
-│   └── root.ejs               # Template HTML principal
-├── config.mjs                 # Configuration centralisée
-├── server.mjs                 # Serveur Express principal
-├── render.yaml                # Configuration Render
-├── .env                       # Variables d'environnement (local)
-├── .gitignore                 # Fichiers à ignorer par Git
-├── package.json               # Dépendances et scripts
-└── README.md                  # Documentation (ce fichier)
-```
-
----
 
 ## Progression du projet (Tags Git)
 
@@ -222,19 +196,19 @@ Le projet a été développé en 5 parties avec des tags Git correspondants :
 
 ```bash
 # Obtenir le nombre de liens
-curl https://url-shortener-yael.onrender.com/api-v2/
+curl https://tp6-devweb-yael.onrender.com/api-v2/
 
 # Créer un lien
-curl -X POST https://url-shortener-yael.onrender.com/api-v2/ \
+curl -X POST https://tp6-devweb-yael.onrender.com/api-v2/ \
   -H "Content-Type: application/json" \
   -d '{"url":"https://nodejs.org"}'
 
 # Obtenir les infos d'un lien (JSON)
 curl -H "Accept: application/json" \
-  https://url-shortener-yael.onrender.com/api-v2/ABC123
+  https://tp6-devweb-yael.onrender.com/api-v2/ABC123
 
 # Supprimer un lien (avec secret)
-curl -X DELETE https://url-shortener-yael.onrender.com/api-v2/ABC123 \
+curl -X DELETE https://tp6-devweb-yael.onrender.com/api-v2/ABC123 \
   -H "X-API-Key: VOTRE_SECRET"
 ```
 
@@ -416,8 +390,8 @@ Le code est fourni à des fins éducatives.
 ## Support et contact
 
 - **Issues GitHub :** https://github.com/VOTRE-USERNAME/TP6_devweb_yael/issues
-- **Documentation API :** https://url-shortener-yael.onrender.com/api-docs
-- **Application live :** https://url-shortener-yael.onrender.com
+- **Documentation API :** https://tp6-devweb-yael.onrender.com/api-docs
+- **Application live :** https://tp6-devweb-yael.onrender.com
 
 ---
 
